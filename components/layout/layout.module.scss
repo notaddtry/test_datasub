@@ -1,0 +1,18 @@
+.main {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(255, 255, 255) 20%,
+    rgb(100, 255, 73)
+  );
+  background: -moz-linear-gradient(
+    45deg,
+    rgb(255, 255, 255) 20%,
+    rgb(100, 255, 73)
+  );
+  background: linear-gradient(45deg, rgb(255, 255, 255) 20%, rgb(100, 255, 73));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
