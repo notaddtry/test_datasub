@@ -2,20 +2,20 @@ import { Schema, model, models } from 'mongoose'
 
 const cardSchema = new Schema({
   cardNumber: {
-    type: Number,
+    type: String,
     required: true,
     unique: true,
   },
   expirationDate: {
-    type: Number,
+    type: String,
     required: true,
   },
   cvv: {
-    type: Number,
+    type: String,
     required: true,
   },
   amount: {
-    type: Number,
+    type: String,
     required: true,
   },
 })

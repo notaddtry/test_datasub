@@ -1,19 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
+import InputMask from 'react-input-mask'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import InputMask from 'react-input-mask'
+import Box from '@mui/material/Box'
+
+import { isDisabled, reset, validation } from './../../lib/utils/validation'
+import { useEffectFocus } from '../../hooks/useEffectFocus'
 
 import styles from './card.module.scss'
-import { Box } from '@mui/material'
-import {
-  getLength,
-  isDisabled,
-  reset,
-  validation,
-} from './../../lib/utils/validation'
 
 const CreditCard = () => {
   const [cardInfo, setCardInfo] = useState({
@@ -41,60 +39,63 @@ const CreditCard = () => {
     setCardInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = () => {
-    console.log(cardInfo)
+  const handleSubmit = async () => {
+    const url = '/api/card'
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cardInfo),
+    })
+    const data = await res.json()
+    console.log(data)
     reset(cardInfo, setCardInfo)
   }
 
   const handleBlur = (e) => {
+    if (!cardInfo[e.target.name].trim()) {
+      setCardError((prev) => ({ ...prev, [e.target.name]: false }))
+      return
+    }
     if (cardInfo[e.target.name].trim()) validation(e, setCardError)
   }
 
   useEffect(() => {
     cardNumberRef.current.focus()
   }, [])
-
-  useEffect(() => {
-    const cardNumberLength = getLength(cardInfo.cardNumber, ' ')
-
-    if (cardNumberLength === 16) {
-      cvvRef.current.focus()
-    }
-  }, [cardInfo.cardNumber])
-
-  useEffect(() => {
-    if (cardInfo.cvv.length === 3) {
-      expirationDateRef.current.focus()
-    }
-  }, [cardInfo.cvv])
-
-  useEffect(() => {
-    const dateLength = getLength(cardInfo.expirationDate, '/')
-
-    if (dateLength === 6) {
-      amountRef.current.focus()
-    }
-  }, [cardInfo.expirationDate])
+  useEffectFocus(cardInfo.cardNumber, ' ', 16, expirationDateRef)
+  useEffectFocus(cardInfo.expirationDate, '/', 6, cvvRef)
+  useEffectFocus(cardInfo.cvv, ' ', 3, amountRef)
 
   return (
     <div className={styles.wrapper}>
-      <Card className={styles.content} sx={{ mb: 1.5 }}>
-        <CardContent>
-          <Typography sx={{ mb: 1.5 }} variant='h5' gutterBottom>
+      <Card className={`${styles.content}`} sx={{ mb: 1.5 }}>
+        <CardContent className={styles.card}>
+          <Typography variant='h5' className={styles.card_info_wrapper}>
             Card Number:
-            {cardInfo.cardNumber}
+            <br />
+            <span className={styles.number}>{cardInfo.cardNumber}</span>
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color='text.secondary'>
+          <Typography sx={{ mb: 1.5 }}>
+            Expiration Date:
+            <br />
+            <span className={styles.date}> {cardInfo.expirationDate}</span>
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} className={styles.cvv}>
             CVV:
+            <br />
             {cardInfo.cvv}
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-            Expiration Date
-            {cardInfo.expirationDate}
-          </Typography>
+          <Box className={styles.logo}>
+            <Image
+              src='/images/image.png'
+              width='120'
+              height='40'
+              layout='fixed'
+            />
+          </Box>
         </CardContent>
       </Card>
-      <Box sx={{ mb: 1.5 }}>
+      <Box sx={{ mb: 1.5 }} className={styles.inputs_wrapper}>
         <InputMask
           mask='9999 9999 9999 9999'
           value={cardInfo.cardNumber}
@@ -113,23 +114,6 @@ const CreditCard = () => {
           )}
         </InputMask>
         <InputMask
-          mask='999'
-          value={cardInfo.cvv}
-          maskChar=''
-          onChange={(e) => handleInput(e)}
-          onBlur={(e) => handleBlur(e)}>
-          {() => (
-            <TextField
-              id='outlined-basic'
-              label='CVV'
-              variant='outlined'
-              name='cvv'
-              inputRef={cvvRef}
-              error={cardError.cvv}
-            />
-          )}
-        </InputMask>
-        <InputMask
           mask='99/9999'
           value={cardInfo.expirationDate}
           maskChar=''
@@ -144,6 +128,23 @@ const CreditCard = () => {
               inputRef={expirationDateRef}
               error={cardError.expirationDate}
               helperText={cardError.expirationDate && 'Date must be real!'}
+            />
+          )}
+        </InputMask>
+        <InputMask
+          mask='999'
+          value={cardInfo.cvv}
+          maskChar=''
+          onChange={(e) => handleInput(e)}
+          onBlur={(e) => handleBlur(e)}>
+          {() => (
+            <TextField
+              id='outlined-basic'
+              label='CVV'
+              variant='outlined'
+              name='cvv'
+              inputRef={cvvRef}
+              error={cardError.cvv}
             />
           )}
         </InputMask>
