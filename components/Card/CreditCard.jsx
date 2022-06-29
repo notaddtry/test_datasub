@@ -41,7 +41,7 @@ const CreditCard = () => {
   }
 
   const handleSubmit = async () => {
-    setFormSubmitted(true)
+    setFormSubmitted(() => true)
     const url = '/api/card'
     const res = await fetch(url, {
       method: 'POST',
@@ -49,8 +49,10 @@ const CreditCard = () => {
       body: JSON.stringify(cardInfo),
     })
     const data = await res.json()
+
     console.log(data)
-    reset(cardInfo, setCardInfo, setFormSubmitted)
+    reset(cardInfo, setCardInfo)
+    setFormSubmitted(() => false)
   }
 
   const handleBlur = (e) => {
@@ -164,7 +166,7 @@ const CreditCard = () => {
           onChange={(e) => handleInput(e)}
         />
         <Button
-          disabled={isDisabled(cardInfo) && !isFormSubmitted}
+          disabled={isDisabled(cardInfo) || isFormSubmitted}
           variant='contained'
           className={styles.button_buy}
           onClick={handleSubmit}>
