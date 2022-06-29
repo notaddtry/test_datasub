@@ -16,4 +16,6 @@ If you want to try it on your locale =>
 
 3)Run 'npm run dev' into your terminal
 
+P.S. If you want to try it on locale => add to your main folder '.env.locale' file,where you must enter 'MONGO_URI=mongodb+srv://notaddtry:591743forIC47935@cluster1.kg6ttfh.mongodb.net/?retryWrites=true&w=majority'
+
 See ya
