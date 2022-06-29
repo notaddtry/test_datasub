@@ -173,7 +173,7 @@ const CreditCard = () => {
             onChange={(e) => handleInput(e)}
           />
           <Button
-            disabled={isDisabled(cardInfo) || isFormSubmitted}
+            disabled={isDisabled(cardInfo)}
             variant='contained'
             className={styles.button_buy}
             onClick={handleSubmit}>
