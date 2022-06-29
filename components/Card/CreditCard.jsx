@@ -7,6 +7,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { isDisabled, reset, validation } from './../../lib/utils/validation'
 import { useEffectFocus } from '../../hooks/useEffectFocus'
@@ -71,7 +72,12 @@ const CreditCard = () => {
   useEffectFocus(cardInfo.cvv, ' ', 3, amountRef)
 
   return (
+    <>
+    {isFormSubmitted && <Box className={styles.loader_wrapper}>
+      <CircularProgress />
+    </Box>}
     <div className={styles.wrapper}>
+      
       <Card className={`${styles.content}`} sx={{ mb: 1.5 }}>
         <CardContent className={styles.card}>
           <Typography variant='h5' className={styles.card_info_wrapper}>
@@ -174,6 +180,7 @@ const CreditCard = () => {
         </Button>
       </Box>
     </div>
+    </>
   )
 }
 

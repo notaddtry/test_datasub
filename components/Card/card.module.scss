@@ -5,6 +5,20 @@
   justify-content: center;
 }
 
+.loader_wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  z-index: 1;
+}
+
 .content {
   flex: 1 1 100%;
   width: 100%;
