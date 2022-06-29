@@ -24,6 +24,9 @@ input[type='number'] {
 
 input {
   position: relative;
+  -webkit-box-shadow: 4px 4px 8px 0px rgba(13, 71, 161, 0.2);
+  -moz-box-shadow: 4px 4px 8px 0px rgba(13, 71, 161, 0.2);
+  box-shadow: 4px 4px 8px 0px rgba(13, 71, 161, 0.2);
 }
 
 .MuiFormHelperText-root {
