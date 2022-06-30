@@ -51,7 +51,8 @@ const CreditCard = () => {
     })
     const data = await res.json()
 
-    alert(data)
+    window.alert(data.message)
+    console.log(data.card)
     reset(cardInfo, setCardInfo)
     setFormSubmitted(() => false)
   }

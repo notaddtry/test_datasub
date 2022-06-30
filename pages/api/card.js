@@ -26,7 +26,10 @@ export default async function handler(req, res) {
       const creditCard = await CreditCard.create(req.body)
       const { _id, amount } = creditCard
 
-      res.json({ responseId: _id, amount })
+      res.json({
+        message: 'Карта успешно добавлена!',
+        card: { responseId: _id, amount },
+      })
     } catch {
       res.status(500).json('Такая карта уже существует!')
     }
