@@ -14,12 +14,12 @@ export default async function handler(req, res) {
     await connect()
     try {
       const { cardNumber } = req.body
-      const existingCard = await CreditCard.findOne({ cardNumber })
+      const cardInDb = await CreditCard.findOne({ cardNumber })
 
-      if (existingCard) {
+      if (cardInDb) {
         return res.json({
           message: 'Такая карта уже существует!',
-          card: existingCard,
+          card: cardInDb,
         })
       }
 
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         card: { responseId: _id, amount },
       })
     } catch {
-      res.status(500).json('Такая карта уже существует!')
+      res.json('Ошибка связи сервера с БД')
     }
   }
 }
