@@ -13,11 +13,22 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     await connect()
     try {
+      const { cardNumber } = req.body
+      const existingCard = await CreditCard.findOne({ cardNumber })
+
+      if (existingCard) {
+        return res.json({
+          message: 'Такая карта уже существует!',
+          card: existingCard,
+        })
+      }
+
       const creditCard = await CreditCard.create(req.body)
       const { _id, amount } = creditCard
+
       res.json({ responseId: _id, amount })
     } catch {
-      res.json('Такая карта уже существует!')
+      res.status(500).json('Такая карта уже существует!')
     }
   }
 }

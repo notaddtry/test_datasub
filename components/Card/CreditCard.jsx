@@ -64,12 +64,14 @@ const CreditCard = () => {
     if (cardInfo[e.target.name].trim()) validation(e, setCardError)
   }
 
-  useEffect(() => {
-    cardNumberRef.current.focus()
-  }, [])
   useEffectFocus(cardInfo.cardNumber, ' ', 16, expirationDateRef)
   useEffectFocus(cardInfo.expirationDate, '/', 6, cvvRef)
   useEffectFocus(cardInfo.cvv, ' ', 3, amountRef)
+  useEffect(() => {
+    if (!isFormSubmitted) {
+      cardNumberRef.current.focus()
+    }
+  }, [isFormSubmitted])
 
   return (
     <>
@@ -177,7 +179,7 @@ const CreditCard = () => {
             variant='contained'
             className={styles.button_buy}
             onClick={handleSubmit}>
-            Оплатить
+            Pay
           </Button>
         </Box>
       </div>
